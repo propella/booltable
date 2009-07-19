@@ -89,6 +89,9 @@ function apply(node, env) {
     if (apply(node[2], env) == 0) return 0;
     return 1;
   }
+  if (node[0] == "=>") {
+    return apply(["+", ["-", node[1]], node[2]], env);
+  }
   if (node[0] == "-") {
     if (apply(node[1], env) == 0) return 1;
     return 0;
@@ -132,7 +135,7 @@ function getNodeList(node) {
   if (typeof node == "string" || typeof node == "number") {
     return [node];
   }
-  if (node[0] == "+" || node[0] == "*") {
+  if (node[0] == "+" || node[0] == "*" || node[0] == "=>") {
     return [node].concat(getNodeList(node[1]), getNodeList(node[2]));
   }
   if (node[0] == "-") {
@@ -160,7 +163,7 @@ function show(node) {
   if (typeof node == "string" || typeof node == "number") {
     return node.toString();
   }
-  if (node[0] == "+" || node[0] == "*") {
+  if (node[0] == "+" || node[0] == "*" || node[0] == "=>") {
     return "(" + show(node[1]) + node[0] + show(node[2]) + ")";
   }
   if (node[0] == "-") {
@@ -186,6 +189,7 @@ function parseLiteral(source) {
 function parseOp(source) {
   if (source[0] == "*") return [true, "*", source.slice(1)];
   if (source[0] == "+") return [true, "+", source.slice(1)];
+  if (/^=>/.exec(source)) return [true, "=>", source.slice(2)];
   return [false];
 }
 
@@ -301,6 +305,7 @@ function test() {
   testEq(many(parseSymbol)("abc!"), [true, ["a", "b", "c"], "!"]);
   testEq(many(parseSymbol)("1"), [true, [], "1"]);
   testEq(parseExpr("1+a*b"), [true, ["*", ["+", 1, "a"], "b"], ""]);
+  testEq(parseExpr("a=>b"), [true, ["=>", "a", "b"], ""]);
   testEq(parseParenthesis("(a+(b+c))"),
          [true, ["+", "a", ["+", "b", "c"]], ""]);
   testEq(parseNot("-(-a+b)"),

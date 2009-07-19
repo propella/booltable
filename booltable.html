@@ -33,6 +33,7 @@ window.onload= function() {
   var query= getQuery();
   if (query == "") return;
   document.getElementById('exp').value= query;
+  printIt();
 }
 
 -->
@@ -69,8 +70,23 @@ td, th {
 <pre id="transcript"> </pre>
 
 <pre>
+-- syntax --
+
+0: false
+1: true
+-: not
++: or
+*: and
+=>: imply
+
 -- examples --
--((-P+Q)*(-Q+R))+(-P+R)
+
+<a href="booltable.html?q=A%2BB">A+B</a> = A or B
+<a href="booltable.html?q=A*B">A*B</a> = A and B
+<a href="booltable.html?q=P%3D%3EQ">P=>Q</a> = P implies Q
+<a href="booltable.html?q=-P%2BQ">-P+Q</a> = P implies Q
+<a href="booltable.html?q=-(P*(-P%2BQ))%2BQ">-(P*(-P+Q))+Q</a> = Modus ponens
+<a href="booltable.html?q=(P%3D%3EQ)*(Q%3D%3ER)%3D%3E(P%3D%3ER)">(P=>Q)*(Q=>R)=>(P=>R)</a>
 </pre>
 
 </body>
