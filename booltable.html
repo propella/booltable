@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+<META http-equiv="content-script-type" content="text/javascript">
+<META http-equiv="content-style-type" content="text/css">
+<META http-equiv="content-type" content="text/html; charset=Shift_JIS">
+<title>Boolean Logic Table</title>
+<script type="text/javascript">
+
+<!--
+
+var out= (function() {
+  var log= "";
+  return function(aString) {
+    log += aString + "\r\n";
+    var transcript= document.getElementById("transcript");
+    transcript.firstChild.nodeValue= log;
+  }
+})();
+
+function printIt() {
+  var expression = document.getElementById('exp').value;
+  var output = document.getElementById('output');
+  try {
+    output.innerHTML= run(expression);
+  } catch (e) {
+    alert(e.toString());
+  }
+  return false;
+}
+
+-->
+</script>
+<script type="text/javascript" src="Bool.js"></script>
+<style type="text/css">
+<!--
+.true {
+  background-color: #ffffff;
+}
+.false {
+  background-color: #a0a0a0;
+}
+
+td, th {
+	border: 1px solid #666666;
+	padding: 6px;
+	margin: 0px;
+}
+
+-->
+</style>
+</head>
+<body>
+<h1>Boolean Logic Table</h1>
+
+<form id="query" action="" onsubmit="return printIt()">
+<p>
+<input id="exp" type="text" size=100 name="expression" value="P+(Q*R)">
+<input type="submit" name="submit" value="enter">
+</p>
+</form>
+<p id="output"> </p>
+<pre id="transcript"> </pre>
+
+<pre>
+-- examples --
+-((-P+Q)*(-Q+R))+(-P+R)
+</pre>
+
+</body>
+</html>
