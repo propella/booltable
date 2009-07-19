@@ -29,9 +29,15 @@ function printIt() {
   return false;
 }
 
+window.onload= function() {
+  var query= getQuery();
+  if (query == "") return;
+  document.getElementById('exp').value= query;
+}
+
 -->
 </script>
-<script type="text/javascript" src="Bool.js"></script>
+<script type="text/javascript" src="booltable.js"></script>
 <style type="text/css">
 <!--
 .true {
@@ -55,7 +61,7 @@ td, th {
 
 <form id="query" action="" onsubmit="return printIt()">
 <p>
-<input id="exp" type="text" size=100 name="expression" value="P+(Q*R)">
+<input id="exp" type="text" size=100 name="q" value="A+B">
 <input type="submit" name="submit" value="enter">
 </p>
 </form>

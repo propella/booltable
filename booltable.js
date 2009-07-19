@@ -22,7 +22,24 @@ function run(string) {
     html += "</tr>";
   }
   html += "</table>";
+
+  html += "<a href='" + getPermlink(string) + "'>permlink</a>";
   return html;
+}
+
+function getQuery() {
+  var query = window.location.search.substring(1);
+  var each = query.split("&");
+  for (var i= 0; i < each.length; i++) {
+    var pair= each[i].split("=");
+    if (pair[0] == "q") return decodeURIComponent(pair[1]);
+  }
+  return "";
+}
+
+// Return link string of the query
+function getPermlink(query) {
+  return window.location.pathname + "?q=" + encodeURIComponent(query);
 }
 
 function getTable(node) {
