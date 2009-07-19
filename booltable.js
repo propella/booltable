@@ -3,10 +3,9 @@
 // by Takashi Yamamiya 2009
 
 function run(string) {
-  var parsed= parseExpr(string);
+  var table= getTable(parse(string));
   var html= "<table>";
 
-  var table= getTable(parsed[1]);
   html += "<tr>";
   for (var x= 0; x < table[0].length; x++) {
     html += "<th>" + table[0][x] + "</th>";
@@ -180,15 +179,21 @@ function show(node) {
 // return value [true, parsed tree, rest of source]
 //           or [false] if failed
 
+function parse(source) {
+  var parsed= parseExpr(source.replace(/\s/g, ""));
+  if (parsed[2] == "") return parsed[1];
+  throw "parse error: " + parsed[2];
+}
+
 function parseLiteral(source) {
-  if (source[0] == "0") return [true, 0, source.slice(1)];
-  if (source[0] == "1") return [true, 1, source.slice(1)];
+  if (source.charAt(0) == "0") return [true, 0, source.slice(1)];
+  if (source.charAt(0) == "1") return [true, 1, source.slice(1)];
   return [false];
 }
 
 function parseOp(source) {
-  if (source[0] == "*") return [true, "*", source.slice(1)];
-  if (source[0] == "+") return [true, "+", source.slice(1)];
+  if (source.charAt(0) == "*") return [true, "*", source.slice(1)];
+  if (source.charAt(0) == "+") return [true, "+", source.slice(1)];
   if (/^=>/.exec(source)) return [true, "=>", source.slice(2)];
   return [false];
 }
@@ -240,7 +245,7 @@ function parseRegExp(regExp) {
 
 function foldl(func, z, xs) {
   if (xs.length == 0) return z;
-  return foldl(func, func(z, xs[0]), xs.splice(1));
+  return foldl(func, func(z, xs[0]), xs.slice(1));
 }
 
 // Return a list of values using parser until it fails.
@@ -295,7 +300,7 @@ function testEq(a, b) {
   else out("expect: " + b + " but: " + a);
 }
 
-function test() {
+function runtest() {
   out("-- parser test --");
   testEq(parseLiteral("1!"), [true, 1, "!"]);
   testEq(parseLiteral("a!"), [false]);

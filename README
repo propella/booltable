@@ -2,6 +2,7 @@ booltable - A simple boolean logic table generator in web browser
 
 http://languagegame.org/pub/booltable/booltable.html
 
-todo: IE test
-todo: space
-todo: imply
+This program was tested by Safari 4, FireFox 3, and InternetExplorer 7.
+
+To run unit tests, remove comment for this line:
+<!-- input type="button" name="test" value="test" onclick="runtest('');" -->
