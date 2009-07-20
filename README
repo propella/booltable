@@ -2,7 +2,24 @@ booltable - A simple boolean logic table generator in web browser
 
 http://languagegame.org/pub/booltable/booltable.html
 
-This program was tested by Safari 4, FireFox 3, and InternetExplorer 7.
+Boolean logic is a basic knowledge for all programmers. The idea is
+very simple and straightforward, yet still it often annoys you a
+lot. One of the reasons might be that boolean logic is not continuous
+behavior, and just a bit of changes makes completely different
+result. This is why it is hard to grab whole character of a boolean
+expression, I think.
+
+This tiny program shows every possible state of a boolean expression
+to make sure your logic is correct. I wrote this to help me reading a
+textbook about logic, and to make programming nested condition
+statements easy.
+
+One nice thing is "permlink" function. You can bookmark your favorite
+boolean expressions to play again. It works even in file URL as this
+is written entirely in Javascript. So feel free to download to your
+local disk.
+
+It was tested by Safari 4, FireFox 3, and InternetExplorer 7.
 
 To run unit tests, remove comment for this line:
 <!-- input type="button" name="test" value="test" onclick="runtest('');" -->

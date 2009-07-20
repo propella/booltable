@@ -1,9 +1,30 @@
-// Boolean table maker
-// This file is released into the public domain.
-// by Takashi Yamamiya 2009
+// booltable : A simple boolean table generator
+//
+// Copyright (c) 2009 Takashi Yamamiya <takashi@vpri.org>
+//
+// Permission is hereby granted, free of charge, to any person
+// obtaining a copy of this software and associated documentation
+// files (the "Software"), to deal in the Software without
+// restriction, including without limitation the rights to use,
+// copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following
+// conditions:
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
 
-function run(string) {
-  var table= getTable(parse(string));
+function run(query) {
+  var table= getTable(parse(query));
   var html= "<table>";
 
   html += "<tr>";
@@ -22,7 +43,7 @@ function run(string) {
   }
   html += "</table>";
 
-  html += "<a href='" + getPermlink(string) + "'>permlink</a>";
+  html += "<a href='" + getPermlink(query) + "'>permlink</a>";
   return html;
 }
 
@@ -228,10 +249,15 @@ function parseExpr(source) {
               seq(parseOp,
 		  parsePrim)))(source);
   if (!result[0]) return [false];
-  var first= result[1][0];
-  var rest= result[1][1];
-  var newTree= foldl(function(z, pair) { return [pair[0], z, pair[1]]; }, first, rest);
+  var newTree= leftRecursion(result[1][0], result[1][1]);
   return [true, newTree, result[2]];
+}
+
+function leftRecursion(first, rest) {
+  if (rest.length == 0) return first;
+  var op= rest[0][0];
+  var second= rest[0][1];
+  return leftRecursion([op, first, second], rest.slice(1));
 }
 
 // Return a parser which accept with the regular expression.
@@ -243,10 +269,7 @@ function parseRegExp(regExp) {
   };
 }
 
-function foldl(func, z, xs) {
-  if (xs.length == 0) return z;
-  return foldl(func, func(z, xs[0]), xs.slice(1));
-}
+// ---------- Combinator Parser Library ----------
 
 // Return a list of values using parser until it fails.
 function many(parser) {
@@ -281,6 +304,8 @@ function seq(parser1, parser2) {
   };
 }
 
+// ---------- Test ----------
+
 // Equality check for unit test.
 function eq(a, b) {
   if (a == b) return true;
@@ -292,8 +317,6 @@ function eq(a, b) {
   }
   return true;
 }
-
-// ---------- Test ----------
 
 function testEq(a, b) {
   if (eq(a, b)) out("success");

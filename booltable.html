@@ -4,7 +4,7 @@
 <META http-equiv="content-script-type" content="text/javascript">
 <META http-equiv="content-style-type" content="text/css">
 <META http-equiv="content-type" content="text/html; charset=Shift_JIS">
-<title>Boolean Logic Table</title>
+<title>booltable</title>
 <script type="text/javascript">
 
 <!--
@@ -58,11 +58,11 @@ td, th {
 </style>
 </head>
 <body>
-<h1>Boolean Logic Table</h1>
+<h1>booltable : A simple boolean table generator</h1>
 
 <form id="query" action="" onsubmit="return printIt()">
 <p>
-<input id="exp" type="text" size=100 name="q" value="A+B">
+<input id="exp" type="text" size=60 name="q" value="A+B">
 <input type="submit" name="submit" value="enter">
 <!-- *** Remove comment followed linke to run test cases. *** -->
 <!-- input type="button" name="test" value="test" onclick="runtest('');" -->
@@ -72,24 +72,20 @@ td, th {
 <pre id="transcript"> </pre>
 
 <pre>
--- syntax --
-
-0: false
-1: true
--: not
-+: or
-*: and
-=>: imply
-
+0: false, 1: true, -: not, +: or, *: and, =>: imply
+A, B, C, ... : variables (only one character)
 -- examples --
-
 <a href="booltable.html?q=A%2BB">A+B</a> = A or B
 <a href="booltable.html?q=A*B">A*B</a> = A and B
 <a href="booltable.html?q=P%3D%3EQ">P=>Q</a> = P implies Q
-<a href="booltable.html?q=-P%2BQ">-P+Q</a> = P implies Q
+<a href="booltable.html?q=-P%2BQ">-P+Q</a> = Definition of impliy
 <a href="booltable.html?q=-(P*(-P%2BQ))%2BQ">-(P*(-P+Q))+Q</a> = Modus ponens
+<a href="booltable.html?q=(A*-B)%2B(-A*B)">(A*-B)+(-A*B)</a> = XOR
 <a href="booltable.html?q=(P%3D%3EQ)*(Q%3D%3ER)%3D%3E(P%3D%3ER)">(P=>Q)*(Q=>R)=>(P=>R)</a>
+
 </pre>
+
+<p>Written by Takashi Yamamiya, <a href="http://github.com/propella/booltable">Source code</a></p>
 
 </body>
 </html>
