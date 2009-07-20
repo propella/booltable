@@ -72,7 +72,7 @@ td, th {
 <pre id="transcript"> </pre>
 
 <pre>
-0: false, 1: true, -: not, +: or, *: and, =>: imply
+0: false, 1: true, -: not, +: or, *: and, =>: imply, =: equivalent
 A, B, C, ... : variables (only one character)
 
 -- examples --
@@ -82,8 +82,8 @@ A, B, C, ... : variables (only one character)
 <a href="booltable.html?q=-P%2BQ">-P+Q</a> = Definition of impliy
 <a href="booltable.html?q=-(P*(-P%2BQ))%2BQ">-(P*(-P+Q))+Q</a> = Modus ponens
 <a href="booltable.html?q=(A*-B)%2B(-A*B)">(A*-B)+(-A*B)</a> = XOR
+<a href="booltable.html?q=-(A%2BB)%3D(-A*-B)">-(A+B)=(-A*-B)</a> = De Morgan
 <a href="booltable.html?q=(P%3D%3EQ)*(Q%3D%3ER)%3D%3E(P%3D%3ER)">(P=>Q)*(Q=>R)=>(P=>R)</a>
-
 </pre>
 
 <p>Written by Takashi Yamamiya,
