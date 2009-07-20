@@ -226,7 +226,7 @@ function parseOp(source) {
 }
 
 function parseSymbol(source) {
-  return parseRegExp(/^[A-Za-z]/)(source);
+  return parseRegExp(/^[^0-9!-?]+/)(source);
 }
 
 function parseParenthesis(source) {
@@ -325,8 +325,9 @@ function eq(a, b) {
 }
 
 function testEq(a, b) {
-  if (eq(a, b)) out("success");
+  if (eq(a, b)) return out("success");
   else out("expect: " + b + " but: " + a);
+//  console.log("expect: ", b, " but: ", a);
 }
 
 function runtest() {
@@ -336,7 +337,7 @@ function runtest() {
   testEq(parseSymbol("a!"), [true, "a", "!"]);
   testEq(parsePrim("a!"), [true, "a", "!"]);
   testEq(orElse(parseLiteral, parseSymbol)("1!"), [true, "1", "!"]);
-  testEq(many(parseSymbol)("abc!"), [true, ["a", "b", "c"], "!"]);
+  testEq(many(parseLiteral)("101!"), [true, ["1", "0", "1"], "!"]);
   testEq(many(parseSymbol)("1"), [true, [], "1"]);
   testEq(parseExpr("1+a*b"), [true, ["*", ["+", 1, "a"], "b"], ""]);
   testEq(parseExpr("a=>b"), [true, ["=>", "a", "b"], ""]);
@@ -345,8 +346,9 @@ function runtest() {
          [true, ["+", "a", ["+", "b", "c"]], ""]);
   testEq(parseNot("-(-a+b)"),
          [true, ["-", ["+", ["-", "a"], "b"]], ""]);
+
   out("-- analize test --");
   testEq(getVarList(["+", "P", ["*", "Q", "R"]]), ["P", "Q", "R"]);
   testEq(getNodeList(["*", ["+", 1, "a"], "b"]),
-	 [["*", ["+", 1, "a"], "b"], ["+", 1, "a"], 1, "a", "b"]);
+	 [["*", ["+", 1, "a"], "b"], "b", ["+", 1, "a"], "a", 1]);
 }
