@@ -26,6 +26,7 @@
 function run(query) {
   var table= getTable(parse(query));
   var html= "<table>";
+  var results= getResultsFromTable(table);
 
   html += "<tr>";
   for (var x= 0; x < table[0].length; x++) {
@@ -42,6 +43,12 @@ function run(query) {
     html += "</tr>";
   }
   html += "</table>";
+
+  html += "<p>This proposition is " +
+    (isValid(results) ? "valid" : "invalid") + ", " +
+    (isConsistent(results) ? "consistent" : "inconsistent") + " and " +
+    (isComplete(results) ? "complete" : "incomplete") +
+    ".</p>";
 
   html += "<a href='" + getPermlink(query) + "'>permlink</a>";
   return html;
@@ -83,6 +90,35 @@ function getTable(node) {
     result.push(line);
   }
   return result;
+}
+
+// Pickup only last culumn (result of the node) from a table
+function getResultsFromTable(table) {
+  var resultIndex= table[0].length - 1;
+  var results= [];
+  for (var rows= 1; rows < table.length; rows++) {
+    results.push(table[rows][resultIndex]);
+  }
+  return results;
+}
+
+// Return true if results is all true
+function isValid(results) {
+  for (var i= 0; i < results.length; i++) if (results[i] == 0) return false;
+  return true;
+}
+
+// Return true if results include a true
+function isConsistent(results) {
+  for (var i= 0; i < results.length; i++) if (results[i] == 1) return true;
+  return false;
+}
+
+// Return true if results have just one true
+function isComplete(results) {
+  var trues= 0;
+  for (var i= 0; i < results.length; i++) if (results[i] == 1) trues++;
+  return trues == 1;
 }
 
 // ---------- Execute ----------
@@ -351,4 +387,12 @@ function runtest() {
   testEq(getVarList(["+", "P", ["*", "Q", "R"]]), ["P", "Q", "R"]);
   testEq(getNodeList(["*", ["+", 1, "a"], "b"]),
 	 [["*", ["+", 1, "a"], "b"], "b", ["+", 1, "a"], "a", 1]);
+  testEq(getResultsFromTable([["a", "b"], [0,1], [1,0]]),
+	 [1, 0]);
+  testEq(isValid([1,1,1]), true);
+  testEq(isValid([1,0,1]), false);
+  testEq(isConsistent([1,0,1]), true);
+  testEq(isConsistent([0,0,0]), false);
+  testEq(isComplete([0,1,0]), true);
+  testEq(isComplete([0,0,0]), false);
 }
